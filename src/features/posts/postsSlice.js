@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import reducer from "../countersSlice";
+
 import { getPosts } from "./postsApi";
 
 const initialState={
@@ -7,7 +7,7 @@ const initialState={
     isLoading: false,
     isError: false,
     error: null,
-}
+};
 
 
 export const fetchPosts= createAsyncThunk('posts/fetchPosts',
@@ -35,8 +35,8 @@ const postsSlice=createSlice({
             state.isLoading=false;
             state.isError=true;
             state.error=action.error?.message;
-        })
-    }
+        });
+    },
 });
 
 export default postsSlice.reducer;
