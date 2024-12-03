@@ -3,7 +3,7 @@ import reducer from "../countersSlice";
 import { getPosts } from "./postsApi";
 
 const initialState={
-    post:[],
+    posts:[],
     isLoading: false,
     isError: false,
     error: null,
@@ -15,13 +15,27 @@ export const fetchPosts= createAsyncThunk('posts/fetchPosts',
       const posts= await getPosts();
       return posts;
     }
-)
+);
+
 
 const postsSlice=createSlice({
     name: 'posts',
-    initialState,
+    initialState, 
     extraReducers:(builder)=>{
-        builder.addCase()
+        builder
+        .addCase(fetchPosts.pending, (state)=>{
+            state.isError=false;
+            state.isLoading=true;
+        })
+       .addCase(fetchPosts.fulfilled, (state,action)=>{
+            state.isLoading=false;
+            state.posts=action.payload;
+        })
+        .addCase(fetchPosts.rejected, (state,action)=>{
+            state.isLoading=false;
+            state.isError=true;
+            state.error=action.error?.message;
+        })
     }
 });
 
